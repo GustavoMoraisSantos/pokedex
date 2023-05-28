@@ -2,11 +2,7 @@ import { Menu } from "antd";
 import type { MenuProps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { getAllGenerations, getPokemonTypes } from "../services/external-api";
-import {
-  DesktopOutlined,
-  ThunderboltOutlined,
-  BranchesOutlined,
-} from "@ant-design/icons";
+import { ThunderboltOutlined, BranchesOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { PokeContextType } from "@/providers/PokeContextType";
 import { PokeContext } from "@/providers/Pokemons";
@@ -39,15 +35,25 @@ function MenuLayout() {
   const [generations, setGenerations] = useState([]);
 
   const contextValue = useContext(PokeContext);
-  const { loadPokemonsByType, loadPokemons, loadPokemonsByGeneration } =
-    contextValue as PokeContextType;
+  const {
+    loadPokemonsByType,
+    loadPokemons,
+    loadPokemonsByGeneration,
+    selectedMenuItem,
+    setSelectedMenuItem,
+  } = contextValue as PokeContextType;
 
   const handleSelectType = async (e: any) => {
-    console.log(e);
+    setSelectedMenuItem([e.key]);
+
     if (e.key === "list") {
       await loadPokemons();
     }
-    if (e.keyPath[1] === "types") await loadPokemonsByType(e.key);
+    if (e.keyPath[1] === "types") {
+      let keyFormated = e.key.toLowerCase();
+      console.log("key", keyFormated);
+      await loadPokemonsByType(keyFormated);
+    }
     if (e.keyPath[1] === "generations") {
       const generation = Number(e.key) + 1;
       await loadPokemonsByGeneration(generation);
@@ -97,8 +103,10 @@ function MenuLayout() {
       "Generations",
       "generations",
       <BranchesOutlined />,
-      generations.map((generation, index) => {
-        return getItem(generation, index);
+      generations.map((generation: string, index) => {
+        const capitalizedGeneration =
+          generation.charAt(0).toUpperCase() + generation.slice(1);
+        return getItem(capitalizedGeneration, index);
       })
     ),
   ];
@@ -106,7 +114,8 @@ function MenuLayout() {
   return (
     <StyledMenu
       theme="light"
-      defaultSelectedKeys={["list"]}
+      defaultSelectedKeys={selectedMenuItem}
+      selectedKeys={selectedMenuItem}
       mode="inline"
       items={items}
       onClick={(e) => handleSelectType(e)}

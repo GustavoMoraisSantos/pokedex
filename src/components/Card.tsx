@@ -1,6 +1,6 @@
 "use client";
 import { IPokemon } from "@/Utils/types";
-import { SettingOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined } from "@ant-design/icons";
 import { Card, Col } from "antd";
 import Image from "next/image";
 
@@ -26,19 +26,18 @@ const PokemonCard = ({ pokemon, handleShowDetail }: Props) => {
       key={pokemon.name}
     >
       <Card
-        title={pokemon.name}
+        title={pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
         extra={<Image src={pokemon.imageUrl} width={100} height={100} alt="" />}
         style={{ minWidth: 240, width: 350 }}
         actions={[
-          <SettingOutlined
+          <PlusCircleOutlined
             onClick={() => handleShowDetail(pokemon)}
             key="setting"
           />,
         ]}
       >
-        <p>Card content</p>
-        <p>Card content</p>
-        <p>Card content</p>
+        {pokemon?.id && <p>Number: #{pokemon.id}</p>}
+        {pokemon?.types && <p>Type: {pokemon.types}</p>}
       </Card>
     </Col>
   );

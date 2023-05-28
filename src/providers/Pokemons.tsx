@@ -14,6 +14,7 @@ export const PokeContext = createContext<PokeContextType | undefined>(
 
 export const PokeProvider = (props: { children: ReactNode }) => {
   const [pokemons, setPokemons] = useState<any[]>();
+  const [selectedMenuItem, setSelectedMenuItem] = useState<string[]>(["list"]);
 
   const loadPokemons = async () => {
     const pokemons = await getPokemons();
@@ -41,6 +42,8 @@ export const PokeProvider = (props: { children: ReactNode }) => {
     loadPokemonsByType,
     loadPokemonsByGeneration,
     loadSearch,
+    selectedMenuItem,
+    setSelectedMenuItem,
   };
   return (
     <PokeContext.Provider value={values}>{props.children}</PokeContext.Provider>

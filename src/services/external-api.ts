@@ -3,8 +3,11 @@ import api from "../axios-config";
   const getPokemonTypes = async () => {
     try {
       const response = await api.get('/type');
-      const types = response.data.results.map((type:any) => type.name);
-
+      const types = response.data.results.map((type: any) => {
+        const capitalizedType = type.name.charAt(0).toUpperCase() + type.name.slice(1);
+        return capitalizedType;
+      });
+  
       return types
     } catch (error) {
       generalError(error);;
@@ -136,11 +139,25 @@ import api from "../axios-config";
           const imageUrl = pokemonResponse.data.sprites.front_default;
           const sprites = pokemonResponse.data.sprites
 
+          const id = pokemonResponse.data.id
+          const types = pokemonResponse.data.types.map((type: any) => type.type.name);
+          const formattedTypes = types.join(" & ");
+          const stats = pokemonResponse.data.stats
+          const formattedStats = stats.map((stat: any) => {
+            return {
+              name: stat.stat.name,
+              base_stat: stat.base_stat,
+            };
+          });
+
           return {
             name: pokemon.name,
             url: pokemon.url,
             imageUrl: imageUrl,
-            sprites
+            sprites,
+            types: formattedTypes,
+            stats: formattedStats,
+            id
           };
         })
       );
