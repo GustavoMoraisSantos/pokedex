@@ -1,8 +1,6 @@
 import React from "react";
 
 const Icon = (props: any) => (
-  // <svg viewBox="0 0 24 24" {...props}>
-
   <svg
     {...props}
     width="15"
@@ -33,7 +31,6 @@ const Icon = (props: any) => (
       />
     </defs>
   </svg>
-  // </svg>
 );
 
 export default Icon;
