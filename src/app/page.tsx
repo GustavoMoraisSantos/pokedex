@@ -17,7 +17,7 @@ export default function Home() {
   const [isLoadingSearch, setIsLoadingSearch] = useState<boolean>(false);
 
   const contextValue = useContext(PokeContext);
-  const { pokemons, loadPokemons, loadSearch } =
+  const { pokemons, loadPokemons, loadSearch, setSelectedMenuItem } =
     contextValue as PokeContextType;
 
   const handleShowDetails = (pokemon: IPokemon) => {
@@ -26,13 +26,16 @@ export default function Home() {
   };
 
   const handleSearch = debounce(async (text: string) => {
+    setSelectedMenuItem(["list"]);
     setIsLoadingSearch(true);
+
     if (!text) {
       loadPokemons();
       setIsLoadingSearch(false);
       return;
     }
-    await loadSearch(text);
+
+    await loadSearch(text.toLocaleLowerCase());
     setIsLoadingSearch(false);
   }, 1000);
 
@@ -43,9 +46,8 @@ export default function Home() {
   return (
     <>
       <StyledSearch
-        placeholder="Search by name"
+        placeholder="Search by name or number"
         onSearch={handleSearch}
-        onChange={(e) => handleSearch(e.target.value)}
         loading={isLoadingSearch}
       />
 

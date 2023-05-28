@@ -6,4 +6,6 @@ export interface PokeContextType {
   loadPokemonsByType:(key:string) => Promise<void>;
   loadPokemonsByGeneration: (generation: number) => Promise<void>;
   loadSearch: (name: string) =>  Promise<void>;
+  selectedMenuItem: string[]
+  setSelectedMenuItem: React.Dispatch<React.SetStateAction<string[]>>;
 }

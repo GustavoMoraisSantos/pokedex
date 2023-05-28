@@ -3,4 +3,7 @@ export interface IPokemon {
   url: string;
   imageUrl: string;
   sprites: any
+  types: string;
+  stats: any,
+  id: number
 }
