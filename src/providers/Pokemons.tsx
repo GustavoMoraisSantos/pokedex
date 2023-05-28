@@ -32,6 +32,7 @@ export const PokeProvider = (props: { children: ReactNode }) => {
 
   const loadSearch = async (name: string) => {
     const pokemon = await getPokemsByName(name);
+    setPokemons(pokemon);
   };
 
   const values = {
