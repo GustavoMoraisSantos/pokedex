@@ -154,27 +154,26 @@ import api from "../axios-config";
   const getPokemsByName = async (name:string) => {
     try {
       const response = await api.get(`/pokemon/${name}`);
-
-      console.log("A RESPONSE DO BT NAME", response)
-      return
-      // const results = response.data.results;
+      if (response) {
+        const results = response.data.forms;
+        const pokemons = await Promise.all(
+          results.map(async (pokemon: any) => {
+            const pokemonResponse = await api.get(pokemon.url);
+            const imageUrl = pokemonResponse.data.sprites.front_default;
+            const sprites = pokemonResponse.data.sprites
   
-      // const pokemons = await Promise.all(
-      //   results.map(async (pokemon: any) => {
-      //     const pokemonResponse = await api.get(pokemon.url);
-      //     const imageUrl = pokemonResponse.data.sprites.front_default;
-      //     const sprites = pokemonResponse.data.sprites
-
-      //     return {
-      //       name: pokemon.name,
-      //       url: pokemon.url,
-      //       imageUrl: imageUrl,
-      //       sprites
-      //     };
-      //   })
-      // );
-  
-      // return pokemons
+            return {
+              name: pokemon.name,
+              url: pokemon.url,
+              imageUrl: imageUrl,
+              sprites
+            };
+          })
+        );
+    
+        return pokemons
+      }
+      return response
     } catch (error) {
       generalError(error);
     }

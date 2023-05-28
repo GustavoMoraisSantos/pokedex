@@ -7,13 +7,14 @@ import { PokeContextType } from "@/providers/PokeContextType";
 import PaginationComponent from "@/components/Pagination";
 import PokemonCard from "@/components/Card";
 import DetailsModal from "@/components/DetailsModal";
+import { debounce } from "lodash";
 
 export default function Home() {
   const [showDetail, setShowDetail] = useState(false);
   const [selectedPokemon, setSelectedPokemon] = useState<IPokemon | undefined>(
     {} as IPokemon
   );
-  const [searchText, setSearchText] = useState("");
+  const [isLoadingSearch, setIsLoadingSearch] = useState<boolean>(false);
 
   const contextValue = useContext(PokeContext);
   const { pokemons, loadPokemons, loadSearch } =
@@ -24,19 +25,16 @@ export default function Home() {
     setShowDetail(true);
   };
 
-  const handleSearch = (text: string) => {
-    setSearchText(text);
-  };
-
-  useEffect(() => {
-    const delayedSearch = setTimeout(() => {
-      loadSearch(searchText);
-    }, 1000);
-
-    return () => {
-      clearTimeout(delayedSearch);
-    };
-  }, [searchText]);
+  const handleSearch = debounce(async (text: string) => {
+    setIsLoadingSearch(true);
+    if (!text) {
+      loadPokemons();
+      setIsLoadingSearch(false);
+      return;
+    }
+    await loadSearch(text);
+    setIsLoadingSearch(false);
+  }, 1000);
 
   useEffect(() => {
     loadPokemons();
@@ -48,6 +46,7 @@ export default function Home() {
         placeholder="Search by name"
         onSearch={handleSearch}
         onChange={(e) => handleSearch(e.target.value)}
+        loading={isLoadingSearch}
       />
 
       <StyledRow gutter={{ xs: 16, sm: 14, md: 12, lg: 12, xl: 8, xxl: 4 }}>
