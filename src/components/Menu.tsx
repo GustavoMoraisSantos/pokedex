@@ -47,7 +47,10 @@ function MenuLayout() {
     setSelectedMenuItem([e.key]);
 
     if (e.key === "list") {
-      await loadPokemons();
+      await loadPokemons({
+        offset: 0,
+        limit: 50,
+      });
     }
     if (e.keyPath[1] === "types") {
       let keyFormated = e.key.toLowerCase();
