@@ -7,3 +7,8 @@ export interface IPokemon {
   stats: any,
   id: number
 }
+
+export interface IDefaultParam {
+  limit: number,
+  offset: number,
+}

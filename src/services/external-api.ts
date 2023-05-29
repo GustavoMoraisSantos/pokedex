@@ -1,3 +1,4 @@
+import { IDefaultParam } from "@/Utils/types";
 import api from "../axios-config";
 
   const getPokemonTypes = async () => {
@@ -64,7 +65,7 @@ import api from "../axios-config";
     
       switch (generation) {
         case 1:
-          start = 1;
+          start = 0;
           end = 151;
           break;
         case 2:
@@ -128,9 +129,15 @@ import api from "../axios-config";
   }
 
 
-  const getPokemons = async () => {
+  const getPokemons = async (params: IDefaultParam) => {
+    let limit = params?.limit
+    let offset = params?.offset
+    if(!params){
+      limit = 50
+      offset = 0
+    }
     try {
-      const response = await api.get('/pokemon?limit=100&offset=0');
+      const response = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
       const results = response.data.results;
   
       const pokemons = await Promise.all(
@@ -161,8 +168,13 @@ import api from "../axios-config";
           };
         })
       );
+
+      const responseFill = {
+        pokemons,
+        totalItems: response.data.count
+      } 
   
-      return pokemons
+      return responseFill
     } catch (error) {
       generalError(error);
     }

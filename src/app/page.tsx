@@ -8,6 +8,7 @@ import PaginationComponent from "@/components/Pagination";
 import PokemonCard from "@/components/Card";
 import DetailsModal from "@/components/DetailsModal";
 import { debounce } from "lodash";
+import { Empty } from "antd";
 
 export default function Home() {
   const [showDetail, setShowDetail] = useState(false);
@@ -17,8 +18,14 @@ export default function Home() {
   const [isLoadingSearch, setIsLoadingSearch] = useState<boolean>(false);
 
   const contextValue = useContext(PokeContext);
-  const { pokemons, loadPokemons, loadSearch, setSelectedMenuItem } =
-    contextValue as PokeContextType;
+  const {
+    pokemons,
+    loadPokemons,
+    loadSearch,
+    setSelectedMenuItem,
+    defaultParams,
+    visiblePagination,
+  } = contextValue as PokeContextType;
 
   const handleShowDetails = (pokemon: IPokemon) => {
     setSelectedPokemon(pokemon);
@@ -30,7 +37,7 @@ export default function Home() {
     setIsLoadingSearch(true);
 
     if (!text) {
-      loadPokemons();
+      loadPokemons(defaultParams);
       setIsLoadingSearch(false);
       return;
     }
@@ -40,8 +47,8 @@ export default function Home() {
   }, 1000);
 
   useEffect(() => {
-    loadPokemons();
-  }, []);
+    loadPokemons(defaultParams);
+  }, [defaultParams]);
 
   return (
     <>
@@ -60,6 +67,7 @@ export default function Home() {
               handleShowDetail={handleShowDetails}
             />
           ))}
+        {pokemons?.length === 0 && <Empty />}
       </StyledRow>
 
       {selectedPokemon && (
@@ -73,7 +81,7 @@ export default function Home() {
         />
       )}
 
-      <PaginationComponent />
+      {visiblePagination && <PaginationComponent />}
     </>
   );
 }

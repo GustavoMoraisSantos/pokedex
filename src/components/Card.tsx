@@ -16,6 +16,7 @@ const PokemonCard = ({ pokemon, handleShowDetail }: Props) => {
         display: "flex",
         justifyContent: "center",
         marginTop: 10,
+        maxHeight: 300,
       }}
       xs={16}
       sm={14}
