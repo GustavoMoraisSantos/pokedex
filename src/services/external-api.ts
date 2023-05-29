@@ -26,12 +26,26 @@ import api from "../axios-config";
             ? pokemonResponse?.data?.sprites?.front_default
             : "";
           const sprites = pokemonResponse.data.sprites;
+
+          const id = pokemonResponse.data.id
+          const types = pokemonResponse.data.types.map((type: any) => type.type.name);
+          const formattedTypes = types.join(" & ");
+          const stats = pokemonResponse.data.stats
+          const formattedStats = stats.map((stat: any) => {
+            return {
+              name: stat.stat.name,
+              base_stat: stat.base_stat,
+            };
+          });
   
           return {
             name: pokemon.name,
             url: pokemon.url,
             imageUrl: imageUrl,
             sprites,
+            types: formattedTypes,
+            stats: formattedStats,
+            id
           };
         })
       );
@@ -111,12 +125,26 @@ import api from "../axios-config";
             ? pokemonResponse?.data?.sprites?.front_default
             : "";
           const sprites = pokemonResponse.data.sprites;
+          
+          const id = pokemonResponse.data.id
+          const types = pokemonResponse.data.types.map((type: any) => type.type.name);
+          const formattedTypes = types.join(" & ");
+          const stats = pokemonResponse.data.stats
+          const formattedStats = stats.map((stat: any) => {
+            return {
+              name: stat.stat.name,
+              base_stat: stat.base_stat,
+            };
+          });
   
           return {
             name: pokemon.name,
             url: pokemon.url,
             imageUrl: imageUrl,
             sprites,
+            types: formattedTypes,
+            stats: formattedStats,
+            id
           };
         })
       );
@@ -190,8 +218,23 @@ import api from "../axios-config";
             const pokemonResponse = await api.get(pokemon.url);
             const imageUrl = pokemonResponse.data.sprites.front_default;
             const sprites = pokemonResponse.data.sprites
+
+            const id = pokemonResponse.data.id
+            const types = pokemonResponse.data.types.map((type: any) => type.type.name);
+            const formattedTypes = types.join(" & ");
+
+            const stats = response.data.stats
+            const formattedStats = stats?.map((stat: any) => {
+              return {
+                name: stat.stat.name,
+                base_stat: stat.base_stat,
+              };
+            });
   
             return {
+              id,
+              types: formattedTypes,
+              stats: formattedStats,
               name: pokemon.name,
               url: pokemon.url,
               imageUrl: imageUrl,
