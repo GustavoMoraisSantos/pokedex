@@ -42,11 +42,7 @@ export default function RootLayout({
                 <MenuLayout />
               </Sider>
               <Layout>
-                <Content style={{ margin: "0 16px" }}>
-                  <Breadcrumb style={{ margin: "16px 0" }}>
-                    <Breadcrumb.Item>User</Breadcrumb.Item>
-                    <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                  </Breadcrumb>
+                <Content style={{ margin: "16px 16px" }}>
                   <div
                     style={{
                       padding: 24,
