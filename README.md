@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-View an online preview: [pokedex.app](https://pokedex-git-master-gustavomoraissantos.vercel.app/)
+##View an online preview: [pokedex.app](https://pokedex-git-master-gustavomoraissantos.vercel.app/)
 
 ## Getting Started
 
